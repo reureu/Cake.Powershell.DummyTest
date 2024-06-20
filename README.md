@@ -57,3 +57,21 @@ So, Cake resolves most of the dependencies, until it bumps into `Microsoft.Manag
 Now, there is something funny about this assembly: 
 * It exists in my global assembly cache and targets the .NET Framework 4.0.
 * It is also part of the Powershell 7.3.3 installation package and targets the .NET Framework 4.5.
+* It seems to be a dependency of Microsoft.PowerShell.Commands.Management 7.3.3.
+
+## Workaround
+Let's dig a little deeper...
+
+* Does Microsoft.PowerShell.Commands.Management 7.3.3 refer a wrong version of Microsoft.Management.Infrastructure ?
+* So what happens if I tell cake to use Microsoft.PowerShell.Commands.Management 7.4.3 instead of 7.3.3.
+
+So let's amend the [build.cake](build.cake) file!
+```
+//////////////////////////////////////////////////////////////////////
+// ADD-INS
+//////////////////////////////////////////////////////////////////////
+#addin nuget:?package=Cake.Powershell&version=3.0.0
+#addin nuget:?package=Microsoft.PowerShell.Commands.Management&version=7.4.3
+```
+
+This allows my build.cake to successfully do its job. 

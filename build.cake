@@ -3,13 +3,16 @@
 //////////////////////////////////////////////////////////////////////
 #addin nuget:?package=Cake.Powershell&version=3.0.0
 
+// Comment out the following line to reproduce https://github.com/SharpeRAD/Cake.Powershell/issues/95
+#addin nuget:?package=Microsoft.PowerShell.Commands.Management&version=7.4.3
+
 //////////////////////////////////////////////////////////////////////
 // ARGUMENTS
 //////////////////////////////////////////////////////////////////////
 
 var _target = Argument("target", "Default");
-var _myParam = Argument("myParam", "");
-var _secret = Argument("secret", "");
+var _myParam = Argument("myParam", "param");
+var _secret = Argument("secret", "secret");
 
 //////////////////////////////////////////////////////////////////////
 // TASKS
@@ -29,8 +32,9 @@ Task("DoSomething")
         {
             StartPowershellFile("./scripts/DoSomething.ps1", new PowershellSettings()
                 {
-                    FormatOutput = true,
-                    LogOutput = true
+                    FormatOutput = false,
+                    LogOutput = false,
+                    BypassExecutionPolicy = true
                 }
                 .WithArguments(args =>
                 {
